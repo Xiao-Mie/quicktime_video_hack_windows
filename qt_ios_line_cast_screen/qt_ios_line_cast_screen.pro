@@ -15,6 +15,7 @@ SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
     src/H264Decoder.cpp \
+    src/Mp4Recorder.cpp \
     src/utils/gcusb.cpp \
     src/utils/RW.cpp \
     src/videowindow.cpp
@@ -25,6 +26,7 @@ HEADERS += \
     src/airplaysource.h \
     src/mainwindow.h \
     src/H264Decoder.h \
+    src/Mp4Recorder.h \
     src/utils/gcusb.h \
     src/utils/RW.h \
     src/videowindow.h

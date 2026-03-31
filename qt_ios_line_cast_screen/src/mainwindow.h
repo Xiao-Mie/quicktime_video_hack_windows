@@ -27,6 +27,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void AutoStart();
+    void AutoStop();
+
 private slots:
     void on_Btn_RefreshDeviceList_clicked();
 

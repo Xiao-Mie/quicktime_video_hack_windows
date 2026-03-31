@@ -20,6 +20,8 @@
 #define MAX_TABLE_INDEX     (6)
 
 
+extern bool g_isCliMode;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -27,8 +29,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //开启控制台
-    AllocConsole();
-    freopen("CONOUT$", "w+t", stdout);
+    if (g_isCliMode) {
+        if (AttachConsole(ATTACH_PARENT_PROCESS)) {
+            freopen("CONOUT$", "w", stdout);
+            freopen("CONOUT$", "w", stderr);
+        }
+    } else {
+        AllocConsole();
+        freopen("CONOUT$", "w+t", stdout);
+    }
 
 //    if (RW::isProcessExist(USBMUXD_PROCESS_NAME))
 //    {
@@ -38,7 +47,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     if (!RW::isProcessExist(USBMUXD_PROCESS_NAME))
     {
-        MessageBoxW(nullptr, QString("请先开启usbmuxd.exe!").toStdWString().c_str(), QString("提示").toStdWString().c_str(), 0);
+        if (!g_isCliMode) {
+            MessageBoxW(nullptr, QString("请先开启usbmuxd.exe!").toStdWString().c_str(), QString("提示").toStdWString().c_str(), 0);
+        }
         qDebug() << "请先开启usbmuxd.exe";
         exit(0);
     }
@@ -86,7 +97,9 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     g_pVideoWindow = new VideoWindow;
-    g_pVideoWindow->show();
+    if (!g_isCliMode) {
+        g_pVideoWindow->show();
+    }
 
     on_Btn_RefreshDeviceList_clicked();
 }
@@ -146,6 +159,16 @@ QStringList MainWindow::GetRunningAirplayList() const
         qstrList.push_back(pAirPlay->get_serial_number());
     }
     return qstrList;
+}
+
+void MainWindow::AutoStart()
+{
+    on_Btn_AllStart_clicked();
+}
+
+void MainWindow::AutoStop()
+{
+    on_Btn_AllStop_clicked();
 }
 
 //刷新设备列表

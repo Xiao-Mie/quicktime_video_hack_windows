@@ -5,6 +5,8 @@
 #include <QPainter>
 #include <QDebug>
 
+extern QString g_RecordFilePath;
+
 #define INIT_SIZE_WIDTH (1024)
 #define INIT_SIZE_HEIGHT (768)
 //#define INIT_SIZE_WIDTH (300)
@@ -77,6 +79,7 @@ void AirPlaySource::SetDeviceInfo(unsigned int device_index, const char* serial_
 
 void AirPlaySource::Start()
 {
+    this->m_mp4Recorder.Start(g_RecordFilePath.toStdString());
     this->m_pQuickTime->SetUserData(this);
     this->m_pQuickTime->Start(serial_number);
     this->m_pH264Decoder->SetUserData(this);
@@ -87,6 +90,7 @@ void AirPlaySource::Stop()
 {
     this->m_pH264Decoder->Stop();
     this->m_pQuickTime->Stop();
+    this->m_mp4Recorder.Stop();
 }
 
 bool AirPlaySource::isBindDevice() const
@@ -122,6 +126,7 @@ void AirPlaySource::audio_init(void* user_data, int bits, int channels, int samp
 //        printf("user_data[%u|%s] %s: %d|%d|%d|%d\n", user_data->device_index, user_data->serial_number, __FUNCTION__, bits, channels, samplerate, isaudio);
 
     AirPlaySource* m_AirPlaySource = (AirPlaySource*)user_data;
+    m_AirPlaySource->m_mp4Recorder.InputAudioInit(bits, channels, samplerate);
     m_AirPlaySource->m_pSoundPlay->SetFormat(channels, samplerate);
     m_AirPlaySource->m_pSoundPlay->PauseAudioDevice(0);
 }
@@ -132,6 +137,8 @@ void AirPlaySource::audio_process(void* user_data, unsigned char* buffer, int le
 //    if (count++ % 60 == 0)
 //        printf("user_data[%u|%s] %s: %d\n", user_data->device_index, user_data->serial_number, __FUNCTION__, length);
     AirPlaySource* m_AirPlaySource = (AirPlaySource*)user_data;
+
+    m_AirPlaySource->m_mp4Recorder.InputAudio(buffer, length);
 
     //if (g_pVideoWindow->GetFullWindowSource() == m_AirPlaySource)
     //{
@@ -156,6 +163,7 @@ void AirPlaySource::video_dis_connect(void* user_data)
 void AirPlaySource::video_h264_extradata(void* user_data, unsigned char* buffer, unsigned int length)
 {
     AirPlaySource* m_AirPlaySource = (AirPlaySource*)user_data;
+    m_AirPlaySource->m_mp4Recorder.InputVideoExtradata(buffer, length);
     CH264Decoder* m_pH264Decoder = (CH264Decoder*)m_AirPlaySource->m_pH264Decoder;
     m_pH264Decoder->input_h264_vedio(buffer, length, EHT_EXTRADATA);
 }
@@ -163,6 +171,7 @@ void AirPlaySource::video_h264_extradata(void* user_data, unsigned char* buffer,
 void AirPlaySource::video_h264_slice(void* user_data, unsigned char* buffer, unsigned int length)
 {
     AirPlaySource* m_AirPlaySource = (AirPlaySource*)user_data;
+    m_AirPlaySource->m_mp4Recorder.InputVideoSlice(buffer, length);
     CH264Decoder* m_pH264Decoder = (CH264Decoder*)m_AirPlaySource->m_pH264Decoder;
     m_pH264Decoder->input_h264_vedio(buffer, length, EHT_SLICE);
 }

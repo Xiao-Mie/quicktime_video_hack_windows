@@ -4,6 +4,7 @@
 #include "H264Decoder.h"
 #include "SoundPlay.h"
 #include "QuickTime.h"
+#include "Mp4Recorder.h"
 #include <QWidget>
 #include <queue>
 
@@ -40,6 +41,7 @@ protected:
     SoundPlay*      m_pSoundPlay    = nullptr;
     CH264Decoder*   m_pH264Decoder  = nullptr;
     QuickTime*      m_pQuickTime    = nullptr;
+    Mp4Recorder     m_mp4Recorder;
     unsigned int device_index;	//设备ID
     char serial_number[64];		//设备序列号
 
