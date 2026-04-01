@@ -13,9 +13,9 @@
 
 ## 致谢
 本项目的实现参考并致谢于 Daniel Paulus 的 Go 项目：  
-👉 [danielpaulus/quicktime_video_hack](https://github.com/danielpaulus/quicktime_video_hack)
+👉 [danielpaulus/quicktime_video_hack](https://github.com/danielpaulus/quicktime_video_hack)    
 本项目的实现参考并致谢于chotgpt 的 C++ 项目： 
-👉 [chotgpt/quicktime_video_hack_windows](https://github.com/chotgpt/quicktime_video_hack_windows)
+👉 [chotgpt/quicktime_video_hack_windows](https://github.com/chotgpt/quicktime_video_hack_windows)    
 本仓库为 **基于该项目思路，使用 C++ 重新开发** 的版本。  
 感谢原作者的逆向研究成果与公开文档。
 
