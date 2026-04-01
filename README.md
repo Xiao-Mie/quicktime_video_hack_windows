@@ -3,21 +3,19 @@
 将 iOS 设备通过 **有线方式投屏到 Windows**，并实时捕获设备端 **音频与视频流**。  
 项目基于 QuickTime 协议的原理，用 **C++** 重新实现，并提供 **命令行与 Qt GUI 示例**。
 
-感谢大哥们的开源,将xx项目的qt投屏改为存储到本地
+感谢大哥们的开源,将项目的qt投屏改为存储到本地
 ---
 
 ## 功能简介
 - 通过数据线在 Windows 上采集 iOS 屏幕画面（视频流和音频流）  
 - 支持多设备
-- 支持二次开发，提供音视频流回调接口  
 - 附带 Qt 简易投屏界面示例  
-
----
 
 ## 致谢
 本项目的实现参考并致谢于 Daniel Paulus 的 Go 项目：  
 👉 [danielpaulus/quicktime_video_hack](https://github.com/danielpaulus/quicktime_video_hack)
-
+本项目的实现参考并致谢于chotgpt 的 C++ 项目： 
+👉 [chotgpt/quicktime_video_hack_windows](https://github.com/chotgpt/quicktime_video_hack_windows)
 本仓库为 **基于该项目思路，使用 C++ 重新开发** 的版本。  
 感谢原作者的逆向研究成果与公开文档。
 
@@ -31,14 +29,11 @@
 ├─ packages/                 # 第三方依赖库与自编译的静态/动态库
 ├─ qt_ios_line_cast_screen/  # Qt 图形界面测试程序（视频预览界面）
 ├─ release/                  # 构建产物与最终打包发布目录
-├─ tool/                     # 驱动安装器及辅助工具（usbmuxd、ideviceinfo等）
-
 
 ```
 ## 使用方法
 ### 1. 启动 usbmuxd 服务
 进入 `tool` 目录并运行：usbmuxd.exe
-
 该进程会监听端口 **37015**，并在检测到 iOS 设备连接时自动进入 QuickTime 模式。
 
 ### 2. 连接并解锁手机
